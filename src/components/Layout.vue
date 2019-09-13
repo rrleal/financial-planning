@@ -1,15 +1,15 @@
 <template>
     <div>
 
-        <nav class="navbar sticky-top flex-md-nowrap p-0" :style="{ 'margin-left': sidebarWidth + 'rem'  }">
+        <nav class="navbar sticky-top flex-md-nowrap p-0" :style="{ 'margin-left': getSidebarWidth + 'rem'  }">
 
             <div class="nav-collapse-action px-2 py-1" style="margin-left: -4px;">
-                <a-icon :type="sidebarCollapseIcon" @click="sidebarCollapse" :style="{ fontSize: '11px', cursor: 'pointer' }"/>
+                <a-icon :type="getSidebarIcon" @click="sidebarCollapse" :style="{ fontSize: '11px', cursor: 'pointer' }"/>
             </div>
 
             <ul class="navbar-nav px-3">
                 <li class="nav-item text-nowrap">
-                    <a class="nav-link" href="#">Sign out</a>
+                    <a class="nav-link" href="#">Sair</a>
                 </li>
             </ul>
 
@@ -17,13 +17,13 @@
 
         <div class="container-fluid">
             <div class="row">
-                <nav class="d-md-block sidebar" :style="{ width: sidebarWidth + 'rem' }">
+                <nav class="d-md-block sidebar" :style="{ width: getSidebarWidth + 'rem' }">
                     <div class="sidebar-sticky">
 
-                        <div class="logo pl-4 py-3" :class="{ 'ml-logo': isSidebarCollapsed }">
-                            <a-icon type="fund" :style="{ fontSize : '26px' }" style="vertical-align: middle;"/>
+                        <div class="logo pl-4 py-3" :class="{ 'ml-logo': sidebar.isCollapsed }">
+                            <a-icon type="dollar" :style="{ fontSize : '26px' }" style="vertical-align: middle;"/>
                             <transition name="slide-fade">
-                            <a class="ml-2" v-show="! isSidebarCollapsed" href="#">Middleware</a>
+                            <a class="ml-2" v-show="! sidebar.isCollapsed" href="#">Planejamento Financeiro</a>
                             </transition>
                         </div>
 
@@ -32,7 +32,7 @@
                                 <a class="nav-link" :class="{ 'active': menuItem.active }" :href="menuItem.route">
                                     <a-icon :type="menuItem.icon" />
                                     <transition name="slide-fade">
-                                    <span class="ml-3" v-if="! isSidebarCollapsed">{{ menuItem.name }}</span>
+                                    <span class="ml-3" v-if="! sidebar.isCollapsed">{{ menuItem.name }}</span>
                                     </transition>
                                 </a>
                             </li>
@@ -67,21 +67,21 @@
                     },
                     {
                         id: 2,
-                        name: 'Endpoints',
+                        name: 'Despesas',
                         route: '#',
                         icon: 'minus-circle',
                         active: false
                     },
                     {
                         id: 3,
-                        name: 'Configurações',
+                        name: 'Receitas',
                         route: '#',
                         icon: 'plus-circle',
                         active: false
                     },
                     {
                         id: 4,
-                        name: 'Fornecedores',
+                        name: 'Planejamento',
                         route: '#',
                         icon: 'edit',
                         active: false
@@ -94,37 +94,56 @@
                         active: false
                     }
                 ],
-                collapseTooltipText: 'Recolher menu lateral',
-                isSidebarCollapsed: false,
-                sidebarCollapseIcon: 'left',
-                sidebarWidth: 15,
-                sidebarParams: {
-                    collapsed: {
-                        icon: 'right',
-                        width: 6
-                    },
-                    expanded: {
-                        icon: 'left',
-                        width: 15
+                sidebar: {
+                    state: 'expanded',
+                    isCollapsed: false,
+                    params: {
+                        collapsed: {
+                            icon: 'right',
+                            width: 6
+                        },
+                        expanded: {
+                            icon: 'left',
+                            width: 15
+                        }
                     }
-                }
+                },
             }
         },
         methods: {
 
+            /**
+             * Recolhe ou expande o menu lateral
+             */
             sidebarCollapse() {
 
-                this.isSidebarCollapsed  = ! this.isSidebarCollapsed;
+                this.sidebar.isCollapsed = ! this.sidebar.isCollapsed;
+                this.sidebar.state       = this.sidebar.isCollapsed ? 'collapsed' : 'expanded';
 
-                let state = this.isSidebarCollapsed ? 'collapsed' : 'expanded';
+            },
 
-                this.sidebarCollapseIcon = this.sidebarParams[state].icon;
-                this.sidebarWidth        = this.sidebarParams[state].width;
+        },
 
+        computed: {
 
-            }
+            /**
+             * Retorna o icon do botão de expandir e recolher o menu lateral
+             * @returns string
+             */
+            getSidebarIcon() {
+                return this.sidebar.params[this.sidebar.state].icon;
+            },
+
+            /**
+             * Retorna a largura do menu lateral
+             * @returns int
+             */
+            getSidebarWidth() {
+                return this.sidebar.params[this.sidebar.state].width;
+            },
 
         }
+
     }
 
 </script>
