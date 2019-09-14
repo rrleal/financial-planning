@@ -27,15 +27,8 @@
                             </transition>
                         </div>
 
-                        <ul class="nav flex-column">
-                            <li class="nav-item" v-for="menuItem in menuItems" :key="'menu-item-' + menuItem.id">
-                                <a class="nav-link" :class="{ 'active': menuItem.active }" :href="menuItem.route">
-                                    <a-icon :type="menuItem.icon" />
-                                    <transition name="slide-fade">
-                                    <span class="ml-3" v-if="! sidebar.isCollapsed">{{ menuItem.name }}</span>
-                                    </transition>
-                                </a>
-                            </li>
+                        <ul class="nav flex-column mt-5">
+                            <sidebar-item v-for="menuItem in menuItems" :key="'menu-item-' + menuItem.id" :item="menuItem" ></sidebar-item>
                         </ul>
 
                     </div>
@@ -53,7 +46,10 @@
 
 <script>
 
+    import SidebarItem from "./SidebarItem";
+
     export default {
+        components: {SidebarItem},
         name: 'Layout',
         data() {
             return {
@@ -63,37 +59,73 @@
                         name: 'Dashboard',
                         route: '#',
                         icon: 'bar-chart',
-                        active: true
+                        active: true,
+                        child: []
                     },
                     {
                         id: 2,
                         name: 'Despesas',
                         route: '#',
                         icon: 'minus-circle',
-                        active: false
+                        active: false,
+                        child: [
+                            {
+                                id: 6,
+                                name: 'Cadastrar',
+                                route: '#',
+                                icon: 'right',
+                                active: false
+                            },
+                            {
+                                id: 7,
+                                name: 'Relatório',
+                                route: '#',
+                                icon: 'right',
+                                active: false
+                            }
+                        ]
                     },
                     {
                         id: 3,
                         name: 'Receitas',
                         route: '#',
                         icon: 'plus-circle',
-                        active: false
+                        active: false,
+                        child: []
                     },
                     {
                         id: 4,
                         name: 'Planejamento',
                         route: '#',
                         icon: 'edit',
-                        active: false
+                        active: false,
+                        child: [
+                            {
+                                id: 8,
+                                name: 'Cadastrar',
+                                route: '#',
+                                icon: 'right',
+                                active: false
+                            },
+                            {
+                                id: 9,
+                                name: 'Relatório',
+                                route: '#',
+                                icon: 'right',
+                                active: false
+                            }
+                        ]
                     },
                     {
                         id: 5,
                         name: 'Acesso',
                         route: '#',
                         icon: 'usergroup-add',
-                        active: false
+                        active: false,
+                        child: []
                     }
                 ],
+                clicked: false,
                 sidebar: {
                     state: 'expanded',
                     isCollapsed: false,
