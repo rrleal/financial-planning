@@ -8,7 +8,7 @@
                 <a-icon :type="item.icon" />
 
                 <transition name="slide-fade">
-                    <span class="ml-3" v-if="! $parent.sidebar.isCollapsed">{{ item.name }}</span>
+                    <span class="ml-3" v-if="! isSidebarCollapsed">{{ item.name }}</span>
                 </transition>
 
                 <a-icon v-if="hasChildItems( item )" class="float-right mt-2" :class="{ 'arrow-rotated': clicked, 'arrow-normal': ! clicked }" :style="{ fontSize: '12px' }" type="right" />
@@ -26,7 +26,7 @@
                             <a class="nav-link" :class="{ 'active': childItem.active }" :href="childItem.route">
                                 <a-icon :type="childItem.icon" />
                                 <transition name="slide-fade">
-                                    <span class="ml-3" v-if="! $parent.sidebar.isCollapsed">{{ childItem.name }}</span>
+                                    <span class="ml-3" v-if="! isSidebarCollapsed">{{ childItem.name }}</span>
                                 </transition>
                             </a>
 
@@ -44,6 +44,9 @@
 </template>
 
 <script>
+
+    import { mapGetters } from 'vuex';
+
     export default {
 
         name: "sidebar-item",
@@ -75,6 +78,17 @@
                 this.clicked = ! this.clicked;
 
             }
+
+        },
+
+        computed: {
+
+            /*
+             * Getters do store
+             */
+            ...mapGetters([
+                'isSidebarCollapsed'
+            ]),
 
         }
 

@@ -16,14 +16,21 @@
         </nav>
 
         <div class="container-fluid">
-            <div class="row">
-                <nav class="d-md-block sidebar" :style="{ width: getSidebarWidth + 'rem' }">
-                    <div class="sidebar-sticky">
 
-                        <div class="logo pl-4 py-3" :class="{ 'ml-logo': sidebar.isCollapsed }">
+            <div class="row">
+
+                <nav class="d-md-block sidebar" :style="{ width: getSidebarWidth + 'rem' }">
+
+                    <div class="sidebar-sticky" style="height: 600px;">
+
+                        <perfect-scrollbar>
+                        <!--<div :style="{ height: pageHeight + 'px' }">-->
+                        <div style="height: 500px;">
+
+                        <div class="logo pl-4 py-3" :class="{ 'ml-logo': isSidebarCollapsed }">
                             <a-icon type="dollar" :style="{ fontSize : '26px' }" style="vertical-align: middle;"/>
                             <transition name="slide-fade">
-                            <a class="ml-2" v-show="! sidebar.isCollapsed" href="#">Planejamento Financeiro</a>
+                            <a class="ml-2" v-show="! isSidebarCollapsed" href="#">Planejamento Financeiro</a>
                             </transition>
                         </div>
 
@@ -31,10 +38,26 @@
                             <sidebar-item v-for="menuItem in menuItems" :key="'menu-item-' + menuItem.id" :item="menuItem" ></sidebar-item>
                         </ul>
 
+                        </div>
+                        </perfect-scrollbar>
+
                     </div>
+
                 </nav>
 
                 <main role="main" class="col-md-9 ml-sm-auto col-lg-10 pt-3 px-4">
+
+                    <perfect-scrollbar>
+                        <div style="height: 200px">
+                    <p>teste teste teste teste teste teste teste teste teste teste teste teste teste teste teste teste teste teste teste teste teste teste teste teste teste teste </p>
+                    <p>teste teste teste teste teste teste teste teste teste teste teste teste teste teste teste teste teste teste teste teste teste teste teste teste teste teste </p>
+                    <p>teste teste teste teste teste teste teste teste teste teste teste teste teste teste teste teste teste teste teste teste teste teste teste teste teste teste </p>
+                    <p>teste teste teste teste teste teste teste teste teste teste teste teste teste teste teste teste teste teste teste teste teste teste teste teste teste teste </p>
+                    <p>teste teste teste teste teste teste teste teste teste teste teste teste teste teste teste teste teste teste teste teste teste teste teste teste teste teste </p>
+                    <p>teste teste teste teste teste teste teste teste teste teste teste teste teste teste teste teste teste teste teste teste teste teste teste teste teste teste </p>
+                    <p>teste teste teste teste teste teste teste teste teste teste teste teste teste teste teste teste teste teste teste teste teste teste teste teste teste teste </p>
+                        </div>
+                    </perfect-scrollbar>
 
                 </main>
 
@@ -47,10 +70,15 @@
 <script>
 
     import SidebarItem from "./SidebarItem";
+    import { mapGetters } from 'vuex';
+    import { mapMutations  } from 'vuex';
 
     export default {
+
         components: {SidebarItem},
+
         name: 'Layout',
+
         data() {
             return {
                 menuItems: [
@@ -78,6 +106,48 @@
                             },
                             {
                                 id: 7,
+                                name: 'Relatório',
+                                route: '#',
+                                icon: 'right',
+                                active: false
+                            },
+                            {
+                                id: 10,
+                                name: 'Impressão',
+                                route: '#',
+                                icon: 'right',
+                                active: false
+                            },
+                            {
+                                id: 11,
+                                name: 'Relatório',
+                                route: '#',
+                                icon: 'right',
+                                active: false
+                            },
+                            {
+                                id: 12,
+                                name: 'Relatório',
+                                route: '#',
+                                icon: 'right',
+                                active: false
+                            },
+                            {
+                                id: 13,
+                                name: 'Impressão',
+                                route: '#',
+                                icon: 'right',
+                                active: false
+                            },
+                            {
+                                id: 14,
+                                name: 'Relatório',
+                                route: '#',
+                                icon: 'right',
+                                active: false
+                            },
+                            {
+                                id: 15,
                                 name: 'Relatório',
                                 route: '#',
                                 icon: 'right',
@@ -128,7 +198,6 @@
                 clicked: false,
                 sidebar: {
                     state: 'expanded',
-                    isCollapsed: false,
                     params: {
                         collapsed: {
                             icon: 'right',
@@ -140,8 +209,10 @@
                         }
                     }
                 },
+                pageHeight: window.innerHeight - 10
             }
         },
+
         methods: {
 
             /**
@@ -149,14 +220,29 @@
              */
             sidebarCollapse() {
 
-                this.sidebar.isCollapsed = ! this.sidebar.isCollapsed;
-                this.sidebar.state       = this.sidebar.isCollapsed ? 'collapsed' : 'expanded';
+                this.$store.commit('setSidebarState', ! this.isSidebarCollapsed);
+
+                this.sidebar.state = this.isSidebarCollapsed ? 'collapsed' : 'expanded';
 
             },
 
         },
 
         computed: {
+
+            /*
+             * Getters do store
+             */
+            ...mapGetters([
+                'isSidebarCollapsed'
+            ]),
+
+            /*
+             * Mutations do store
+             */
+            ...mapMutations([
+                'setSidebarState'
+            ]),
 
             /**
              * Retorna o icon do botão de expandir e recolher o menu lateral
@@ -174,7 +260,7 @@
                 return this.sidebar.params[this.sidebar.state].width;
             },
 
-        }
+        },
 
     }
 

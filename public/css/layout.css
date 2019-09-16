@@ -33,9 +33,9 @@ a:hover {
     position: -webkit-sticky;
     position: sticky;
     top: 0; /* Height of navbar */
-    height: calc(100vh);
-    overflow-x: hidden;
-    overflow-y: auto; /* Scrollable contents if viewport is shorter than content. */
+    overflow-y: auto;
+    /*overflow-x: hidden;
+    overflow-y: auto;*/  /*Scrollable contents if viewport is shorter than content. */
     border-right: 1px solid #F3F7FA;
     background: #fff;
     width: 15rem;
